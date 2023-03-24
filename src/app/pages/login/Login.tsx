@@ -1,48 +1,52 @@
-import { useEffect, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ButtonLogin } from "./components/ButtonLogin";
+import { InputLogin } from "./components/InputLogin";
 
 export const Login = () => {
+  const inputPassowordRef = useRef<HTMLInputElement>(null);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState<string>();
+  const [password, setPassword] = useState<string>();
 
   const navigate = useNavigate();
 
-
-  const handleEntrar =  () => {
-    
+  const handleEntrar = useCallback(() => {
     const user = {
       email: email,
-      password: password
+      password: password,
+    };
+    console.log(user);
+    if (user.email != null && user.password != null) {
+      navigate("/dashboard");
+      console.log("Login foi executado");
+    } else {
+      alert("Usuário ou senha inválidos");
     }
-    console.log(user)
+  }, [email, password]);
 
-
-  }
-
-  useEffect(() => {
-
-    const user = {
-      email: email,
-      password: password
-    }
-    console.log(user)
-
-  },[email, password])
-  
   return (
     <div>
       <form>
-        <label>
-          <span>Email</span>
-          <input value={email} onChange={e => setEmail(e.target.value)} />
-        </label><br/>
-        <label>
-          <span>Senha</span>
-          <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
-        </label>
-        <br/>
-        <button type="button" onClick={handleEntrar}>Entrar</button>
+        <InputLogin
+          type="email"
+          label="Email"
+          onChange={(newValue) => setEmail(newValue)}
+          onPressEnter={() => inputPassowordRef.current?.focus()}
+          value={email}
+        />
+        <br />
+        <InputLogin
+          type="password"
+          label="Senha"
+          onChange={(newValue) => setPassword(newValue)}
+          value={password}
+          ref={inputPassowordRef}
+        />
+        <br />
+        <ButtonLogin type="button" onClick={handleEntrar}>
+          Entrar
+        </ButtonLogin>
       </form>
     </div>
   );

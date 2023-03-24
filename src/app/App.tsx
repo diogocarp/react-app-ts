@@ -1,17 +1,12 @@
-import { Router } from "./routes"
+import { Router } from "./routes";
+import { UserLogProvider } from "./shared/contexts";
 
 const App = () => {
-
   return (
+    <UserLogProvider>
+      <Router />
+    </UserLogProvider>
+  );
+};
 
-    <div className="App">
-      <Router/>
-    </div>
-
-  )
-
-}
-
-export default App
-
-
+export default App;
